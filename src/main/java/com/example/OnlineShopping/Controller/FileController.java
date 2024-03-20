@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
@@ -70,6 +71,32 @@ public class FileController {
 			return ResponseEntity.status(HttpStatus.CREATED).body(e.getMessage());
 
 		}
+		
+		
+		
 	}
 	
+	@PostMapping("/songupload")
+    public ResponseEntity<String> uploadAudioFile(@RequestParam("file") MultipartFile audioFile) {
+        if (audioFile.isEmpty()) {
+            return ResponseEntity.badRequest().body("Please select a file.");
+        }
+
+        try {
+            // Generate a unique ID for the file
+            UUID uuid = UUID.randomUUID();
+//            String uploadsLocation = "E:\\OnlineShopping\\OnlineShopping\\src\\main\\resources\\Uploads\\";
+            String fileName = uuid.toString() + "_" + audioFile.getOriginalFilename();
+            MultipartConfigFactory factory = new MultipartConfigFactory();
+            factory.setLocation("E:\\OnlineShopping\\OnlineShopping\\src\\main\\resources\\Uploads\\audio");
+            // Save the file to a directory or database
+            // You can save the audioFile bytes to a database here
+
+            return ResponseEntity.ok().body("File uploaded successfully: " + fileName);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading file: " + e.getMessage());
+        }
+    }
 }
+

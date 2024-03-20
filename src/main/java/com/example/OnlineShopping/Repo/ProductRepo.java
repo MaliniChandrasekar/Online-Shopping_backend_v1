@@ -13,7 +13,7 @@ import com.example.OnlineShopping.Model.Signup;
 
 @Repository
 public interface ProductRepo  extends JpaRepository<Product, Integer> {
-//	@Query(value = "Select * from Products Where productname = :productname", nativeQuery = true)
-//	  List<Product> findByName(String productname);
+	@Query(value = "Select * from Products Where categoryname = :categoryname", nativeQuery = true)
+	  List<Product> findByName(String categoryname);
 }
 
